@@ -1,6 +1,6 @@
 import "./app.css";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 
 function App() {
@@ -10,6 +10,10 @@ function App() {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [usrVal, setUsrVal] = useState(false);
+
+  const [usuarios, setUsuarios] = useState([]);
+  /* const [loading, setLoading] = useState(false); */
+  /*  const [er, setEr] = useState(null); */
 
   const refreshToken = async () => {
     try {
@@ -66,6 +70,17 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/usuarios")
+      .then((res) => {
+        console.log("Estatus de Objeto: ", res.statusText);
+        console.log(res.data);
+        setUsuarios(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div className="container">
       {user ? (
@@ -75,12 +90,21 @@ function App() {
             <b>{user.username}</b>.
           </span>
           <span>Delete Users:</span>
-          <button className="deleteButton" onClick={() => handleDelete(1)}>
+          {usuarios.map((usr) => (
+            <button
+              className="deleteButton"
+              onClick={() => handleDelete(usr.id)}
+              key={usr.id}
+            >
+              {usr.username}
+            </button>
+          ))}
+          {/*  <button className="deleteButton" onClick={() => handleDelete(1)}>
             Delete John
           </button>
           <button className="deleteButton" onClick={() => handleDelete(2)}>
             Delete Jane
-          </button>
+          </button> */}
           {error && (
             <span className="error">
               You are not allowed to delete this user!
