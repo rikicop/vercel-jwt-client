@@ -70,15 +70,21 @@ function App() {
     }
   };
 
+  const fectchUsuarios = async () => {
+    const { data } = await axios.get("http://localhost:5000/api/usuarios");
+    setUsuarios(data);
+  };
+
   useEffect(() => {
-    axios
+    fectchUsuarios();
+    /*  axios
       .get("http://localhost:5000/api/usuarios")
       .then((res) => {
         console.log("Estatus de Objeto: ", res.statusText);
         console.log(res.data);
         setUsuarios(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err)); */
   }, []);
 
   return (
@@ -96,15 +102,10 @@ function App() {
               onClick={() => handleDelete(usr.id)}
               key={usr.id}
             >
-              {usr.username}
+              Delete {usr.username}
             </button>
           ))}
-          {/*  <button className="deleteButton" onClick={() => handleDelete(1)}>
-            Delete John
-          </button>
-          <button className="deleteButton" onClick={() => handleDelete(2)}>
-            Delete Jane
-          </button> */}
+
           {error && (
             <span className="error">
               You are not allowed to delete this user!
