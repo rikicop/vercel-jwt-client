@@ -49,7 +49,8 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/login", { username, password });
+      const res = await axios.post("/api/login", { username, password });
+      /*  console.log(username, password); */
       setUser(res.data);
     } catch (err) {
       console.log("Tal vez pass o usuario incorrectos", err);
@@ -61,7 +62,7 @@ function App() {
     setSuccess(false);
     setError(false);
     try {
-      await axiosJWT.delete("/users/" + id, {
+      await axiosJWT.delete("/api/users/" + id, {
         headers: { authorization: "Bearer " + user.accessToken },
       });
       setSuccess(true);
@@ -135,7 +136,7 @@ function App() {
               Login
             </button>
           </form>
-          {usrVal && <h5>Usuario o Password Incorrecto</h5>}
+          {usrVal && <h5>Usuario o Password Incorrectos</h5>}
         </div>
       )}
     </div>
